@@ -43,8 +43,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 
-func init() {
-	png, err := os.Open("./img/shiba.png")
+func openImagePNG(srcPath string) *ebiten.Image {
+	png, err := os.Open(srcPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +54,11 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	shibaImage = ebiten.NewImageFromImage(img)
+	return ebiten.NewImageFromImage(img)
+}
+
+func init() {
+	shibaImage = openImagePNG("./img/shiba.png")
 }
 
 func main() {
