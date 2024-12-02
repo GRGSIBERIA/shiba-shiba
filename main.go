@@ -8,10 +8,16 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+)
+
+var (
+	shibaImage *ebiten.Image
 )
 
 type Game struct {
-	player Actor
+	player Player
+	keys   []ebiten.Key
 }
 
 const (
@@ -19,18 +25,19 @@ const (
 	screenHeight = 240
 )
 
-var (
-	shibaImage *ebiten.Image
-)
-
 func (g *Game) Update() error {
+	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
+
+	g.player.keyboardMove(g)
+
+	g.player.update()
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 
-	g.player.drawSprite(screen, shibaImage, 64, 64)
+	g.player.drawSprite(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -59,7 +66,12 @@ func main() {
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Shiba Shiba")
 
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	var g Game
+	g.player.posX = 32.0
+	g.player.posY = 32.0
+	g.player.sprite = shibaImage
+
+	if err := ebiten.RunGame(&g); err != nil {
 		log.Fatal(err)
 	}
 }
