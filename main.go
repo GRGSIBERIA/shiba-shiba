@@ -7,11 +7,12 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-type Game struct{}
+type Game struct {
+	player Actor
+}
 
 const (
 	screenWidth  = 320
@@ -29,14 +30,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 
-	s := shibaImage.Bounds().Size()
-	op := &colorm.DrawImageOptions{}
-	var c colorm.ColorM
-	op.GeoM.Translate(-float64(s.X)/2, -float64(s.Y)/2)
-	op.GeoM.Scale(1.0/16.0, 1.0/16.0)
-	op.GeoM.Translate(float64(screenWidth)/2, float64(screenHeight)/2)
-
-	colorm.DrawImage(screen, shibaImage, c, op)
+	g.player.drawSprite(screen, shibaImage, 64, 64)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {

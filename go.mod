@@ -1,5 +1,6 @@
 module github.com/GRGSIBERIA/shiba_shiba
 
+
 go 1.23.3
 
 require github.com/hajimehoshi/ebiten/v2 v2.8.5
